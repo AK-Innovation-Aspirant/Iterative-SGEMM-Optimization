@@ -23,9 +23,7 @@ The optimization techniques used were informed by the following resources:
 The GPU used for all benchmarks was an **NVIDIA Quadro RTX 5000**, which has a **theoretical FP32 compute throughput of ~11.2 TFLOPS**.  
 For a matrix size of **4092×4092**, the total operation count for SGEMM is:
 
-\[
-2 \times N^3 \approx 1.37 \times 10^{11} \ \text{FLOPs}
-\]
+Operation count = 2 × (4092³) ≈ 1.37 × 10¹¹ floating-point operations (FLOPs)
 
 At the theoretical maximum, this would correspond to a runtime of roughly **12.2 ms**—a useful lower bound for comparing against measured results.
 
