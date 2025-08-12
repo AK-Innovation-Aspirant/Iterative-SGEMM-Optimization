@@ -32,7 +32,7 @@ Below is a summary of kernel variants, their implementation focus, and execution
 | 6               | Vectorized Access        | 22.0411 ms (1d)                            |
 | 7               | Bank Conflicts Extra Col | 26.7314 ms (1d)                            |
 | 8               | Bank Conflicts Swizzling | 18.6528 ms (1d)                            |
-| 9               | Autotuning               | 18.1215 ms (no swizzle, see note Kernel 9) |
+| 9               | Autotuning               | 18.1215 ms (no swizzle, see notes Kernel 9) |
 | 10              | Warptiling               | 16.0404 ms (no swizzle)                    |
 | 11              | Double Buffering         | 16.9039 ms                                 |
 | -               | Cublas SGEMM             | 14.5 ms                                    |
