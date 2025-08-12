@@ -44,7 +44,7 @@ Below is a summary of kernel variants, their implementation focus, and execution
 | 11              | Double Buffering         | 16.9039 ms                                 | ~8108           |
 | -               | cuBLAS SGEMM             | 14.5 ms                                    | ~9462           |
 
-> **Note:** GFLOP/s values are computed from \( \frac{2 \times N^3}{\text{runtime in seconds}} \).  
+> **Note:** GFLOP/s values are computed from 2 × (N³) - runtime in seconds  
 > cuBLAS achieves ~84% of theoretical peak here, and the best hand-tuned kernel reaches ~76%.
 > **Note:** Timings represent the *best achieved* result for each kernel variant, not necessarily from the same code version. Parentheses provide additional notes.
 
