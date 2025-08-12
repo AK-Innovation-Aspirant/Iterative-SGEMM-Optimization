@@ -20,29 +20,29 @@ The optimization techniques used were informed by the following resources:
 
 ## 📊 Performance Table
 
-The GPU used for all benchmarks was an **NVIDIA Quadro RTX 5000**, which has a **theoretical FP32 compute throughput of ~11.2 TFLOPS**.  
+The GPU used for all benchmarks was an **NVIDIA Quadro RTX 5000**, with a theoretical FP32 throughput of ~11.2 TFLOPs.  
 For a matrix size of **4092×4092**, the total operation count for SGEMM is:
 
-Operation count = 2 × (4092³) ≈ 1.37 × 10¹¹ floating-point operations (FLOPs) / 137 GFLOPS
+Operation count = 2 × (4092³) ≈ 1.37 × 10¹¹ floating-point operations (FLOPs)
 
-At the theoretical maximum, this would correspond to a runtime of roughly **12.2 ms**—a useful lower bound for comparing against measured results.
+At the theoretical maximum, this corresponds to a lower-bound runtime of roughly **12.2 ms**.
 
 Below is a summary of kernel variants, their implementation focus, and execution time:
 
-| Kernel Number   | Name                     | Timing (M,K,N=4092)                        | Approx. GFLOP/s |
-|-----------------|--------------------------|--------------------------------------------|-----------------|
-| 1               | Naive Implementation     | 615.086 ms (1d)                            | ~223            |
-| 2               | GMEM Coalescing          | 134.786 ms (2d layout)                     | ~1018           |
-| 3               | Shared Memory Access     | 103.786 ms (1d)                            | ~1322           |
-| 4               | 1D Blocktiling           | 48.255 ms (1d)                             | ~2842           |
-| 5               | 2D Blocktiling           | 21.8304 ms (2d layout) / 23.4354 ms (1d)   | ~6285 / ~5852   |
-| 6               | Vectorized Access        | 22.0411 ms (1d)                            | ~6220           |
-| 7               | Bank Conflicts Extra Col | 26.7314 ms (1d)                            | ~5128           |
-| 8               | Bank Conflicts Swizzling | 18.6528 ms (1d)                            | ~7345           |
-| 9               | Autotuning               | 18.1215 ms (no swizzle, see notes for Kernel 9) | ~7557       |
-| 10              | Warptiling               | 16.0404 ms (no swizzle)                    | ~8542           |
-| 11              | Double Buffering         | 16.9039 ms                                 | ~8108           |
-| -               | cuBLAS SGEMM             | 14.5 ms                                    | ~9462           |
+| Kernel Number   | Name                     | Timing (M,K,N=4092)                        |
+|-----------------|--------------------------|--------------------------------------------|
+| 1               | Naive Implementation     | 615.086 ms (1d)                            |
+| 2               | GMEM Coalescing          | 134.786 ms (2d layout)                     |
+| 3               | Shared Memory Access     | 103.786 ms (1d)                            |
+| 4               | 1D Blocktiling           | 48.255 ms (1d)                             |
+| 5               | 2D Blocktiling           | 21.8304 ms (2d layout) / 23.4354 ms (1d)   |
+| 6               | Vectorized Access        | 22.0411 ms (1d)                            |
+| 7               | Bank Conflicts Extra Col | 26.7314 ms (1d)                            |
+| 8               | Bank Conflicts Swizzling | 18.6528 ms (1d)                            |
+| 9               | Autotuning               | 18.1215 ms (no swizzle, see notes for Kernel 9) |
+| 10              | Warptiling               | 16.0404 ms (no swizzle)                    |
+| 11              | Double Buffering         | 16.9039 ms                                 |
+| -               | cuBLAS SGEMM             | 14.5 ms                                    |
 
 > **Note:** GFLOP/s values are computed from 2 × (N³) - runtime in seconds  
 > cuBLAS achieves ~84% of theoretical peak here, and the best hand-tuned kernel reaches ~76%.
