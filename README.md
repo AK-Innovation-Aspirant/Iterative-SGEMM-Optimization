@@ -18,17 +18,59 @@ The optimization techniques used were informed by the following resources:
 
 ---
 
+## 📊 Performance Table
+
+Below is a summary of kernel variants, their implementation focus, and execution time on **4092x4092** matrices on a **Quadro RTX 5000**.
+
+| Kernel Number   | Name                     | Timing (M,K,N=4092)                        |
+|-----------------|--------------------------|--------------------------------------------|
+| 1               | Naive Implementation     | 615.086 ms (1d)                            |
+| 2               | GMEM Coalescing          | 134.786 ms (2d layout)                     |
+| 3               | Shared Memory Access     | 103.786 ms (1d)                            |
+| 4               | 1D Blocktiling           | 48.255 ms (1d)                             |
+| 5               | 2D Blocktiling           | 21.8304 ms (2d layout) / 23.4354 ms (1d)   |
+| 6               | Vectorized Access        | 22.0411 ms (1d)                            |
+| 7               | Bank Conflicts Extra Col | 26.7314 ms (1d)                            |
+| 8               | Bank Conflicts Swizzling | 18.6528 ms (1d)                            |
+| 9               | Autotuning               | 18.1215 ms (no swizzle, see note Kernel 9) |
+| 10              | Warptiling               | 16.0404 ms (no swizzle)                    |
+| 11              | Double Buffering         | 16.9039 ms                                 |
+| -               | Cublas SGEMM             | 14.5 ms                                    |
+
+> **Note:** Timings represent the *best achieved* result for each kernel variant, not necessarily from the same code version. Parentheses provide additional notes.
+
+---
+
 ## 📝 Summary of Learnings
 
-A detailed summary of my learnings and performance tuning journey(and experiments in addition to the Siboehm github implementation) is available here:
+This project was a deep dive into CUDA performance engineering—starting from a naive one-thread-per-output kernel (~615 ms) and iteratively refining it to a near-cuBLAS performer (~16 ms), achieving over a 38× speedup. The journey focused on exploiting the GPU memory hierarchy, optimizing execution mapping, and mitigating hardware bottlenecks.
 
+Key themes explored:
+
+- **Memory Access & Bandwidth Efficiency**  
+  - Understanding and exploiting the CUDA memory hierarchy (registers, shared memory, L1/L2 caches, global memory).  
+  - Achieving warp-wide global memory coalescing for both loads and stores.  
+  - Using vectorized `float4` loads/stores for 128-bit transactions, with careful alignment/padding to handle non-multiple-of-4 dimensions.  
+
+- **Data Reuse & Locality**  
+  - Implementing shared memory tiling to amortize global memory latency.  
+  - Moving from 1D to 2D block tiling for balanced reuse of rows and columns.  
+  - Register tiling to reduce shared memory traffic.
+
+- **Execution Mapping & Thread Organization**  
+  - Transitioning from one-output-per-thread to multi-output-per-thread designs for better GPU utilization.  
+  - Specializing warp-level work assignment (warp tiling) to align computation granularity with hardware execution units.  
+  - Autotuning tile sizes and launch configurations to match the Quadro RTX 5000’s SM and register constraints.
+
+- **Latency Hiding & Pipelining**  
+  - Experimenting with double buffering to overlap global memory loads with computation, and analyzing its trade-offs on Turing architecture.  
+  - Understanding when additional buffering hurts occupancy due to shared memory footprint.
+
+- **Hardware-Aware Optimization**  
+  - Identifying and mitigating shared memory bank conflicts through both padding and swizzling, with architecture-specific performance differences.  
+  - Leveraging compiler hints (`__launch_bounds__`, `#pragma unroll`, `constexpr`) for register allocation, loop unrolling, and reduced branching overhead.  
+
+For a detailed kernel-by-kernel breakdown—including diagrams, formulas, code annotations, experimental deviations from the Siboehm baseline, and future experiments —see the full notes:  
 📄 [SGEMM Optimization Notes (Google Doc)](https://docs.google.com/document/d/1K0kRn2RzdPTzVd_ZB9ktYOvlfTi4ZblQvi5NCOVj6kw/edit?tab=t.0)
-
-This includes, but is not limited to:
-
-- Memory hierarchy insights and register usage  
-- Shared memory tiling strategies  
-- Thread/block tuning and occupancy considerations  
-- Performance bottlenecks and warp-level optimizations
 
 
