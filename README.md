@@ -20,7 +20,7 @@ The optimization techniques used were informed by the following resources:
 
 ## 📊 Performance Table
 
-The GPU used for all benchmarks was an **NVIDIA Quadro RTX 5000**, with a theoretical FP32 throughput of ~11.2 TFLOPs.  
+The GPU used for all benchmarks was an **NVIDIA Quadro RTX 5000**, with a theoretical FP32 throughput of ~11.2 TFLOPS.  
 For a matrix size of **4092×4092**, the total operation count for SGEMM is:
 
 Operation count = 2 × (4092³) ≈ 1.37 × 10¹¹ floating-point operations (FLOPs)
