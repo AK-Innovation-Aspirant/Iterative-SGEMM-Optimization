@@ -2,7 +2,7 @@
 
 This project documents the iterative optimization of FP32 SGEMM (Single-Precision General Matrix Multiplication) for large square matrices (4092x4092) using CUDA. It follows the progression based on the highly cited Siboehm Blog (link below) and heavily uses code from it adapted to my GPU setup. The goal was to learn the fundamentals of low-level CUDA programming and extend it to a real-world problem. The GPU used being a **QUADRO RTX 5000**.
 
-> ⚠️ **Note:** There is no code yet in this repo at the time of writing. It will be published after cleanup and optimizing for arbitrary sizes of matrices rather than specific shapes of M,N,K like the blog. However, please refer to the detailed notes at the bottom of the README for code-specifc annotations and experiments.
+> ⚠️ **Note:** There is no code yet in this repo at the time of writing. It will be published after cleanup and optimizing for arbitrary sizes of matrices rather than specific shapes of M,N,K like the blog. However, please refer to the detailed notes(SGEMM Optimization Notes) at the bottom of the README for code-specifc annotations and experiments.
 
 ---
 
