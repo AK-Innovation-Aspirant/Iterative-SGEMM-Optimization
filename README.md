@@ -80,6 +80,6 @@ Key themes explored:
   - Leveraging compiler hints (`__launch_bounds__`, `#pragma unroll`, `constexpr`) for register allocation, loop unrolling, and reduced branching overhead.  
 
 For a detailed kernel-by-kernel breakdown—including diagrams, formulas, code annotations, experimental deviations from the Siboehm baseline, and future experiments —see the full notes:  
-📄 [SGEMM Optimization Notes](https://docs.google.com/document/d/1K0kRn2RzdPTzVd_ZB9ktYOvlfTi4ZblQvi5NCOVj6kw/edit?tab=t.0)
+📄 [SGEMM Optimization Notes](https://1drv.ms/w/c/daac4dd0d1e9b0b0/ESRplrMEctlJpcr1XWiTNq4BJXMMJkH_cghWN5K50MvXIA?e=OQAqEI)
 
 
